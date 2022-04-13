@@ -1,6 +1,18 @@
 package smalgorithm
 
-func KMP(text string, pattern string) int {
+import (
+    "errors"
+)
+
+func KMP(text string, pattern string) (int, error) {
+    if len(pattern) == 0 {
+        return -1, errors.New("Pattern Length is 0")
+    } else {
+        return kmpAlgo(text, pattern), nil
+    }
+}
+
+func kmpAlgo(text string, pattern string) int {
 	borderArray := kmpBorderArray(pattern)
 
 	textLen := len(text)

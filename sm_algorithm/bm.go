@@ -1,6 +1,18 @@
 package smalgorithm
 
-func BM(text string, pattern string) int {
+import (
+    "errors"
+)
+
+func BM(text string, pattern string) (int, error) {
+    if len(pattern) == 0 {
+        return -1, errors.New("Pattern Length is 0")
+    } else {
+        return bmAlgo(text, pattern), nil
+    }
+}
+
+func bmAlgo(text string, pattern string) int {
     lastOccur := bmLastOccur(pattern)
 
     textLen := len(text)
