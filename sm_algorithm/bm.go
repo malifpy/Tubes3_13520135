@@ -43,7 +43,7 @@ func bmAlgo(text string, pattern string) int {
             if !exists {
                 lastOcc = -1
             }
-            i = i + ptrnLen - min(j, 1 + lastOcc)
+            i = i + ptrnLen - Mins(j, 1 + lastOcc)
             j = ptrnLen - 1
         }
     }
@@ -61,10 +61,10 @@ func bmLastOccur(pattern string) map[byte]int {
     return lastOccur
 }
 
-func min(a int, b int) int {
-    if a < b {
-        return a
-    }
-
-    return b
-}
+// func min(a int, b int) int {
+//     if a < b {
+//         return a
+//     }
+//
+//     return b
+// }
