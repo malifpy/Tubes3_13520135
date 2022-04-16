@@ -13,13 +13,6 @@ import (
 
 var db *sql.DB
 
-// // albums slice to seed record album data.
-// var albums = []dbhandler.Album{
-//     {ID: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
-//     {ID: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
-//     {ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
-// }
-
 func main() {
 
 	var err error
@@ -51,14 +44,10 @@ func getAlbums(c *gin.Context) {
 func postAlbums(c *gin.Context) {
 	var newAlbum dbhandler.Album
 
-	// Call BindJSON to bind the received JSON to
-	// newAlbum.
 	if err := c.BindJSON(&newAlbum); err != nil {
 		return
 	}
 
-	// Add the new album to the slice.
-	// albums = append(albums, newAlbum)
 	dbhandler.InsertAlbums(db, newAlbum)
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
@@ -72,14 +61,10 @@ func getJenisPenyakit(c *gin.Context) {
 func postJenisPenyakit(c *gin.Context) {
 	var newJenisPenyakit dbhandler.JenisPenyakit
 
-	// Call BindJSON to bind the received JSON to
-	// newAlbum.
 	if err := c.BindJSON(&newJenisPenyakit); err != nil {
 		return
 	}
 
-	// Add the new album to the slice.
-	// albums = append(albums, newAlbum)
 	dbhandler.InsertJenisPenyakit(db, newJenisPenyakit)
 	c.IndentedJSON(http.StatusCreated, newJenisPenyakit)
 }
@@ -93,30 +78,10 @@ func getHasilPrediksi(c *gin.Context) {
 func postHasilPrediksi(c *gin.Context) {
 	var newHasilPrediksi dbhandler.HasilPrediksi
 
-	// Call BindJSON to bind the received JSON to
-	// newAlbum.
 	if err := c.BindJSON(&newHasilPrediksi); err != nil {
 		return
 	}
 
-	// Add the new album to the slice.
-	// albums = append(albums, newAlbum)
 	dbhandler.InsertHasilPrediksi(db, newHasilPrediksi)
 	c.IndentedJSON(http.StatusCreated, newHasilPrediksi)
 }
-
-// getAlbumByID locates the album whose ID value matches the id
-// parameter sent by the client, then returns that album as a response.
-// func getAlbumByID(c *gin.Context) {
-//     id := c.Param("id")
-//
-//     // Loop through the list of albums, looking for
-//     // an album whose ID value matches the parameter.
-//     for _, a := range albums {
-//         if a.ID == id {
-//             c.IndentedJSON(http.StatusOK, a)
-//             return
-//         }
-//     }
-//     c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
-// }
