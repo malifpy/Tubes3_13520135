@@ -1,17 +1,17 @@
-package main;
+package main
 
 import (
-    "net/http"
-    "github.com/gin-gonic/gin"
-    "dna-matcher/dbhandler"
-    "database/sql"
-    _ "github.com/lib/pq"
-    "fmt"
-    "os"
+	"database/sql"
+	"dna-matcher/dbhandler"
+	"fmt"
+	"net/http"
+	"os"
+
+	"github.com/gin-gonic/gin"
+	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
-
 
 // // albums slice to seed record album data.
 // var albums = []dbhandler.Album{
@@ -22,41 +22,87 @@ var db *sql.DB
 
 func main() {
 
-    var err error
-    db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
-    if err != nil {
-      panic(err)
-    }
+	var err error
+	db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		panic(err)
+	}
 
-    router := gin.Default()
-    router.GET("/albums", getAlbums)
-    router.POST("/albums", postAlbums)
+	router := gin.Default()
+	router.GET("/albums", getAlbums)
+	router.POST("/albums", postAlbums)
+	router.GET("/jenis_penyakit", getJenisPenyakit)
+	router.POST("/jenis_penyakit", postJenisPenyakit)
+	router.GET("/hasil_prediksi", getHasilPrediksi)
+	router.POST("/hasil_prediksi", postHasilPrediksi)
 
-    router.Run()
-    defer db.Close()
+	router.Run()
+	defer db.Close()
 }
 
 // getAlbums responds with the list of all albums as JSON.
 func getAlbums(c *gin.Context) {
-    albums, err := dbhandler.ViewAll(db)
-    fmt.Println(albums, err)
-    c.IndentedJSON(http.StatusOK, albums)
+	albums, err := dbhandler.ViewAllAlbums(db)
+	fmt.Println(albums, err)
+	c.IndentedJSON(http.StatusOK, albums)
 }
 
 // postAlbums adds an album from JSON received in the request body.
 func postAlbums(c *gin.Context) {
-    var newAlbum dbhandler.Album
+	var newAlbum dbhandler.Album
 
-    // Call BindJSON to bind the received JSON to
-    // newAlbum.
-    if err := c.BindJSON(&newAlbum); err != nil {
-        return
-    }
+	// Call BindJSON to bind the received JSON to
+	// newAlbum.
+	if err := c.BindJSON(&newAlbum); err != nil {
+		return
+	}
 
-    // Add the new album to the slice.
-    // albums = append(albums, newAlbum)
-    dbhandler.Insert(db, newAlbum)
-    c.IndentedJSON(http.StatusCreated, newAlbum)
+	// Add the new album to the slice.
+	// albums = append(albums, newAlbum)
+	dbhandler.InsertAlbums(db, newAlbum)
+	c.IndentedJSON(http.StatusCreated, newAlbum)
+}
+
+func getJenisPenyakit(c *gin.Context) {
+	jenis_penyakit, err := dbhandler.ViewAllJenisPenyakit(db)
+	fmt.Println(jenis_penyakit, err)
+	c.IndentedJSON(http.StatusOK, jenis_penyakit)
+}
+
+func postJenisPenyakit(c *gin.Context) {
+	var newJenisPenyakit dbhandler.JenisPenyakit
+
+	// Call BindJSON to bind the received JSON to
+	// newAlbum.
+	if err := c.BindJSON(&newJenisPenyakit); err != nil {
+		return
+	}
+
+	// Add the new album to the slice.
+	// albums = append(albums, newAlbum)
+	dbhandler.InsertJenisPenyakit(db, newJenisPenyakit)
+	c.IndentedJSON(http.StatusCreated, newJenisPenyakit)
+}
+
+func getHasilPrediksi(c *gin.Context) {
+	hasil_prediksi, err := dbhandler.ViewAllHasilPrediksi(db)
+	fmt.Println(hasil_prediksi, err)
+	c.IndentedJSON(http.StatusOK, hasil_prediksi)
+}
+
+func postHasilPrediksi(c *gin.Context) {
+	var newHasilPrediksi dbhandler.HasilPrediksi
+
+	// Call BindJSON to bind the received JSON to
+	// newAlbum.
+	if err := c.BindJSON(&newHasilPrediksi); err != nil {
+		return
+	}
+
+	// Add the new album to the slice.
+	// albums = append(albums, newAlbum)
+	dbhandler.InsertHasilPrediksi(db, newHasilPrediksi)
+	c.IndentedJSON(http.StatusCreated, newHasilPrediksi)
 }
 
 // getAlbumByID locates the album whose ID value matches the id
