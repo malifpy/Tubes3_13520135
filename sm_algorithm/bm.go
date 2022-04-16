@@ -4,6 +4,7 @@ import (
     "errors"
 )
 
+// Wrapper algoritma, memastikan pattern nya gak kosong
 func BM(text string, pattern string) (int, error) {
     if len(pattern) == 0 {
         return -1, errors.New("Pattern Length is 0")
@@ -12,6 +13,7 @@ func BM(text string, pattern string) (int, error) {
     }
 }
 
+// Algoritma utama, mengikuti PowerPoint Pak Rinaldi
 func bmAlgo(text string, pattern string) int {
     lastOccur := bmLastOccur(pattern)
 
@@ -26,7 +28,7 @@ func bmAlgo(text string, pattern string) int {
 
     j := ptrnLen - 1
 
-    // Emulasi do while loop
+    // Simulasi do while loop
     var lastOcc int
     var exists bool
     firstItr := true
@@ -39,6 +41,7 @@ func bmAlgo(text string, pattern string) int {
             i--
             j--
         } else {
+            // Cari karakter di map
             lastOcc, exists = lastOccur[text[i]]
             if !exists {
                 lastOcc = -1
@@ -50,7 +53,9 @@ func bmAlgo(text string, pattern string) int {
     return -1
 }
 
+// Fungsi Last Occur, mencari last occurence 
 func bmLastOccur(pattern string) map[byte]int {
+    // Menggunakan map daripada me-list semua karakter
     lastOccur := make(map[byte]int)
     ptrnLen := len(pattern)
 
@@ -60,11 +65,3 @@ func bmLastOccur(pattern string) map[byte]int {
 
     return lastOccur
 }
-
-// func min(a int, b int) int {
-//     if a < b {
-//         return a
-//     }
-//
-//     return b
-// }

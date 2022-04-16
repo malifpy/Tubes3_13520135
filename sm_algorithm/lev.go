@@ -1,12 +1,15 @@
 package smalgorithm
 
 func LevDist(strA string, strB string) int {
-    return levDistRec(strA, strB, make(map[string]int))
+    cache := make(map[string]int)
+    return levDistRec(strA, strB, &cache)
 }
 
-func levDistRec(strA string, strB string, cache map[string]int) int {
+// Algoritma Levenshtein Distance, tapi pakai memoization
+func levDistRec(strA string, strB string, cache *map[string]int) int {
+    // Untuk key dari map
 	concatStr := strA + "|" + strB
-	res, found := cache[concatStr]
+	res, found := (*cache)[concatStr]
 	if !found {
 		if len(strB) == 0 {
 			res = len(strA)
@@ -21,12 +24,13 @@ func levDistRec(strA string, strB string, cache map[string]int) int {
 				levDistRec(strA[1:], strB[1:], cache),
 			)
 		}
-		cache[concatStr] = res
+		(*cache)[concatStr] = res
 	}
 	return res
 
 }
 
+// Multivariable min
 func Mins(value int, values ...int) int {
 	for _, v := range values {
 		if v < value {

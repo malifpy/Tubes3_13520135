@@ -4,6 +4,7 @@ import (
     "errors"
 )
 
+// Wrapper algoritma, memastikan pattern gak kosong
 func KMP(text string, pattern string) (int, error) {
     if len(pattern) == 0 {
         return -1, errors.New("Pattern Length is 0")
@@ -12,6 +13,7 @@ func KMP(text string, pattern string) (int, error) {
     }
 }
 
+// Sesuai PPT
 func kmpAlgo(text string, pattern string) int {
 	borderArray := kmpBorderArray(pattern)
 
@@ -36,6 +38,7 @@ func kmpAlgo(text string, pattern string) int {
 	return -1
 }
 
+// Fungsi tepian
 func kmpBorderArray(input string) []int {
 	strLen := len(input)
 	// Array dinamis
