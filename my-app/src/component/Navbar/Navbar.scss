@@ -1,0 +1,23 @@
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.2em 0;
+    background-color: #171717;
+    &-header {
+        margin-left: 3em;
+        color: #EDEDED;
+        .nav-logo {
+            cursor: default;
+            padding: 0.4em;
+        }
+    }
+    a {
+        text-decoration: none;
+        color: #EDEDEDED;
+        transition: all 0.2s ease-in-out;
+    }
+    a:hover {
+        opacity: 0.8;
+    }
+}
