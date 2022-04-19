@@ -4,12 +4,12 @@ import (
 	"database/sql"
 	"dna-matcher/dbhandler"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-    "github.com/gin-contrib/cors"
 	_ "github.com/lib/pq"
 )
 
@@ -73,6 +73,8 @@ func postAlbums(c *gin.Context) {
 	}
 
 	dbhandler.InsertAlbums(db, newAlbum)
+    x, _ := ioutil.ReadAll(c.Request.Body)
+    fmt.Printf("%s\n", string(x))
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
 
