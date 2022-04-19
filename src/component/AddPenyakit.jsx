@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-// import { Endpoints } from '../Api'
+import { Endpoints } from '../Api'
 import "./AddPenyakit.scss"
 
 class AddPenyakit extends React.Component {
@@ -8,59 +8,63 @@ class AddPenyakit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: 0,
       nama_penyakit:'',
       rantai_dna:''
     };
     
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-      
-  handleChange (event) {
-    this.setState({nama_penyakit: event.target.nama_penyakit});
-    this.setState({rantai_dna: event.target.rantai_dna});
   }
     
   handleSubmit = () => {
+    
+    console.log(this.nama_penyakit.value);
+    console.log(this.rantai_dna.value);
+    
     const formData = new FormData();
     
-    // Update the formData object
-    console.log(this.nama_penyakit);
-    console.log(this.rantai_dna);
+    // Update the formData object    
+    formData.append("id", this.id);
+    formData.append("nama", this.nama_penyakit);
+    formData.append("rantai_dna", this.rantai_dna);
+
+
+    if(formData.values != null){
+      
+      axios.post(Endpoints.addPenyakit, formData).then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
     
-    formData.append(
-      this.nama_penyakit,
-      this.rantai_dna
-    );
-    
-    // Details of the uploaded file
-    console.log(this.state.nama_penyakit);
-    console.log(this.state.rantai_dna);
-    
+    } else {
+
+      console.log("error");
+
+    }
     // Request made to the backend api
     // Send formData object
-    axios.post(`https://tubes3-dna-matcher.herokuapp.com/jenis_penyakit`, formData);
   }
   
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <div>
         <ul>
           <label>
             nama penyakit
-            <input type="text" required={true} value = {this.nama_penyakit} onChange={this.handleChange}/>
+            <input type="text" required={true} ref={(ref) => {this.nama_penyakit = ref; }}/>
           </label>
         </ul>
         <ul>
           <label>
             rantai dna
-            <input type="text" required={true} value = {this.rantai_dna} onChange={this.handleChange} />
+            <input type="text" required={true} ref={(ref) => {this.rantai_dna = ref; }}/>
           </label>
         </ul>
         <ul>
           <button onClick={this.handleSubmit}>Submit</button>
         </ul>
-      </form>
+      </div>
     );
   }
 }
