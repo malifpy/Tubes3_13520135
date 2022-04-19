@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+    "github.com/gin-contrib/cors"
 	_ "github.com/lib/pq"
 )
 
@@ -22,6 +23,7 @@ func main() {
 	}
 
 	router := gin.Default()
+    router.Use(cors.Default())
 	router.GET("/albums", getAlbums)
 	router.POST("/albums", postAlbums)
 	router.GET("/jenis_penyakit", getJenisPenyakit)
