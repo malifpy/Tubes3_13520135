@@ -30,12 +30,31 @@ class AddPenyakit extends React.Component {
 
 
     if(formData.values != null){
+        console.log(Endpoints.addPenyakit)
       
-      axios.post(Endpoints.addPenyakit, formData).then((response) => {
+        axios({
+            method: 'POST',
+            url: Endpoints.addPenyakit,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                id: this.id,
+                nama: this.nama_penyakit.value,
+                rantai_dna: this.rantai_dna.value
+            }
+
+        }).then((response) => {
         console.log(response);
       }, (error) => {
         console.log(error);
       });
+        /*
+      axios.post(Endpoints.addPenyakit, formData).then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });*/
     
     } else {
 
