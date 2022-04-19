@@ -71,6 +71,8 @@ func postJenisPenyakit(c *gin.Context) {
 	}
 
 	dbhandler.InsertJenisPenyakit(db, newJenisPenyakit)
+    x, _ := ioutil.ReadAll(c.Request.Body)
+    fmt.Printf("%s\n", string(x))
 	c.IndentedJSON(http.StatusCreated, newJenisPenyakit)
 }
 
@@ -88,5 +90,7 @@ func postHasilPrediksi(c *gin.Context) {
 	}
 
 	dbhandler.InsertHasilPrediksi(db, newHasilPrediksi)
+    x, _ := ioutil.ReadAll(c.Request.Body)
+    fmt.Printf("%s\n", string(x))
 	c.IndentedJSON(http.StatusCreated, newHasilPrediksi)
 }
