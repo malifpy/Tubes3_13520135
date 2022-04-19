@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+    "github.com/gin-contrib/cors"
 	_ "github.com/lib/pq"
 )
 
@@ -23,7 +24,11 @@ func main() {
 	}
 
 	router := gin.Default()
+<<<<<<< HEAD
 	router.Use(cors.Default())
+=======
+    router.Use(cors.Default())
+>>>>>>> 70c4ccfb073322d46460b578eba2509d908d112b
 	router.GET("/albums", getAlbums)
 	router.POST("/albums", postAlbums)
 	router.GET("/jenis_penyakit", getJenisPenyakit)
