@@ -1,1 +1,1 @@
-web: bin/dna-matcher
+'web: vendor/bin/dna-matcher public/'
