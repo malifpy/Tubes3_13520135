@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
@@ -22,7 +23,7 @@ func main() {
 	}
 
 	router := gin.Default()
-	router.Use(CORSMiddleware())
+	router.Use(cors.Default())
 	router.GET("/albums", getAlbums)
 	router.POST("/albums", postAlbums)
 	router.GET("/jenis_penyakit", getJenisPenyakit)
