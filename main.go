@@ -24,11 +24,7 @@ func main() {
 	}
 
 	router := gin.Default()
-<<<<<<< HEAD
-	router.Use(cors.Default())
-=======
     router.Use(cors.Default())
->>>>>>> 70c4ccfb073322d46460b578eba2509d908d112b
 	router.GET("/albums", getAlbums)
 	router.POST("/albums", postAlbums)
 	router.GET("/jenis_penyakit", getJenisPenyakit)
@@ -38,23 +34,6 @@ func main() {
 
 	router.Run()
 	defer db.Close()
-}
-
-func CORSMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Credentials", "true")
-		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
-
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-
-		c.Next()
-	}
 }
 
 // getAlbums responds with the list of all albums as JSON.
