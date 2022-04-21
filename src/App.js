@@ -4,7 +4,7 @@ import {
   Route
 } from "react-router-dom";
 import { About } from './pages/About';
-import { TestDNA} from './pages/TestDNA'
+import { MatcherDNA } from './pages/MatcherDNA'
 
 function App() {
 
@@ -14,7 +14,7 @@ function App() {
       <div>
         <Routes>
           <Route exact path='/About' element={ <About /> } />
-          <Route exact path='/' element={ <TestDNA/> }/>
+          <Route exact path='/' element={ <MatcherDNA /> }/>
         </Routes>
       </div>
     </Router>
