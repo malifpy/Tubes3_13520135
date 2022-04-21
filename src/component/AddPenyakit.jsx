@@ -10,23 +10,37 @@ class AddPenyakit extends React.Component {
     this.state = {
       id: 0,
       nama_penyakit:'',
-      rantai_dna:''
+      rantai_dna: ''
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFile = this.handleFile.bind(this);
   }
-    
+  
+
+  handleFile = (file) => {
+    var fileReader = new FileReader()
+    fileReader.readAsText(file)
+    fileReader.onloadend = (e)=> {
+      var content = e.target.result
+      console.log(content)
+      this.setState({
+        rantai_dna : content
+      });
+    }
+  }
+
   handleSubmit = () => {
     
     console.log(this.nama_penyakit.value);
-    console.log(this.rantai_dna.value);
+    console.log(this.state.rantai_dna);
     
     const formData = new FormData();
     
     // Update the formData object    
     formData.append("id", this.id);
     formData.append("nama", this.nama_penyakit);
-    formData.append("rantai_dna", this.rantai_dna);
+    formData.append("rantai_dna", this.state.rantai_dna);
 
 
     if(formData.values != null){
@@ -41,7 +55,7 @@ class AddPenyakit extends React.Component {
             data: {
                 id: this.id,
                 nama: this.nama_penyakit.value,
-                rantai_dna: this.rantai_dna.value
+                rantai_dna: this.state.rantai_dna
             }
 
         }).then((response) => {
@@ -49,20 +63,13 @@ class AddPenyakit extends React.Component {
       }, (error) => {
         console.log(error);
       });
-        /*
-      axios.post(Endpoints.addPenyakit, formData).then((response) => {
-        console.log(response);
-      }, (error) => {
-        console.log(error);
-      });*/
     
     } else {
 
       console.log("error");
 
     }
-    // Request made to the backend api
-    // Send formData object
+    
   }
   
   render() {
@@ -77,7 +84,7 @@ class AddPenyakit extends React.Component {
         <ul>
           <label>
             rantai dna
-            <input type="text" required={true} ref={(ref) => {this.rantai_dna = ref; }}/>
+            <input type="file" required={true} accept='.txt' onChange={e => this.handleFile(e.target.files[0])}/>
           </label>
         </ul>
         <ul>
