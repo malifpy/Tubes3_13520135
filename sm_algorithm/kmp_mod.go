@@ -9,7 +9,7 @@ func KMPMod(text string, pattern string) (int, float64, error) {
 	if len(pattern) == 0 {
 		return -1, 0.0, errors.New("Pattern Length is 0")
 	} else {
-        // (* 2 / 10) karena toleransinya >= 80%
+		// (* 2 / 10) karena toleransinya >= 80%
 		fIdx, diff := kmpModAlgo(text, pattern, len(pattern)*2/10)
 		return fIdx, diff, nil
 	}
@@ -28,12 +28,12 @@ func kmpModAlgo(text string, pattern string, tolerance int) (int, float64) {
 	ptrnLen := len(pattern)
 
 	i, j, k, diffCount, minCount, minI := 0, 0, -1, 0, ptrnLen, -1
-    // i          variabel index untuk text
-    // j          variabel index untuk pattern
-    // k          kemunculan pertama perbedaan
-    // diffCount  jumlah perbedaan
-    // minCount   jumlah perbedaan paling sedikit
-    // minI       index text untuk minCount
+	// i          variabel index untuk text
+	// j          variabel index untuk pattern
+	// k          kemunculan pertama perbedaan
+	// diffCount  jumlah perbedaan
+	// minCount   jumlah perbedaan paling sedikit
+	// minI       index text untuk minCount
 
 	for i < textLen && !(j == ptrnLen-1 && diffCount == 0) {
 		for i < textLen && j < ptrnLen && diffCount <= tolerance {
@@ -53,14 +53,14 @@ func kmpModAlgo(text string, pattern string, tolerance int) (int, float64) {
 			}
 		}
 		if i < textLen {
-            // Penambahan berlebihan di akhir loop sebelumnya
-            // sehingga dikurangi
+			// Penambahan berlebihan di akhir loop sebelumnya
+			// sehingga dikurangi
 			i--
 			j--
 			if diffCount > 0 {
-                // Pergi ke perbedaan pertama dengan cara
-                // yang sama seperti jika ada kesalahan
-                // di algoritma KMP biasa
+				// Pergi ke perbedaan pertama dengan cara
+				// yang sama seperti jika ada kesalahan
+				// di algoritma KMP biasa
 				if k > 0 {
 					i = i - (j - k)
 					j = borderArray[k-1]
@@ -69,7 +69,7 @@ func kmpModAlgo(text string, pattern string, tolerance int) (int, float64) {
 				} else {
 					i++
 				}
-                // Reset k dan diffCount
+				// Reset k dan diffCount
 				k = -1
 				diffCount = 0
 			}

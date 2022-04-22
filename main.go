@@ -23,35 +23,15 @@ func main() {
 	}
 
 	router := gin.Default()
-    router.Use(cors.Default())
-	router.GET("/albums", getAlbums)
-	router.POST("/albums", postAlbums)
+	router.Use(cors.Default())
 	router.GET("/jenis_penyakit", getJenisPenyakit)
 	router.POST("/jenis_penyakit", postJenisPenyakit)
 	router.GET("/hasil_prediksi", getHasilPrediksi)
 	router.POST("/hasil_prediksi", postHasilPrediksi)
+	router.POST("/periksa", postPeriksa)
 
 	router.Run()
 	defer db.Close()
-}
-
-// getAlbums responds with the list of all albums as JSON.
-func getAlbums(c *gin.Context) {
-	albums, err := dbhandler.ViewAllAlbums(db)
-	fmt.Println(albums, err)
-	c.IndentedJSON(http.StatusOK, albums)
-}
-
-// postAlbums adds an album from JSON received in the request body.
-func postAlbums(c *gin.Context) {
-	var newAlbum dbhandler.Album
-
-	if err := c.BindJSON(&newAlbum); err != nil {
-		return
-	}
-
-	dbhandler.InsertAlbums(db, newAlbum)
-	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
 
 func getJenisPenyakit(c *gin.Context) {
@@ -86,4 +66,36 @@ func postHasilPrediksi(c *gin.Context) {
 
 	dbhandler.InsertHasilPrediksi(db, newHasilPrediksi)
 	c.IndentedJSON(http.StatusCreated, newHasilPrediksi)
+}
+
+type Periksa struct {
+	IdPengguna       int64  `json:"id"`
+	NamaPengguna     string `json:"nama_pengguna"`
+	RantaiDNA        string `json:"rantai_dna"`
+	PrediksiPenyakit string `json:"prediksi_penyakit"`
+}
+
+// constructor
+func New(IdPengguna int64, NamaPengguna string, RantaiDNA string, PrediksiPenyakit string) Periksa {
+
+	p := Periksa{IdPengguna, NamaPengguna, RantaiDNA, PrediksiPenyakit}
+	return p
+}
+
+func postPeriksa(c *gin.Context) {
+	var newPeriksa Periksa
+
+	if err := c.BindJSON(&newPeriksa); err != nil {
+		return
+	}
+
+	c.IndentedJSON(http.StatusCreated, newPeriksa)
+}
+
+func (p Periksa) ValidateDnaSequence() {
+
+}
+
+func (p Periksa) CheckPenyakit() {
+
 }
