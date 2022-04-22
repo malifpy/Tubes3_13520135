@@ -9,10 +9,14 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
 	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
+var pasien = []Pasien{
+	{IdPengguna: 1, NamaPengguna: "Zian", RantaiDNA: "ACGTACGTACGTCGTA", PrediksiPenyakit: "siput gila"},
+}
 
 func main() {
 
@@ -28,7 +32,8 @@ func main() {
 	router.POST("/jenis_penyakit", postJenisPenyakit)
 	router.GET("/hasil_prediksi", getHasilPrediksi)
 	router.POST("/hasil_prediksi", postHasilPrediksi)
-	router.POST("/periksa", postPeriksa)
+	router.POST("/pasien", postPasien)
+	router.GET("/pasien", getPasien)
 
 	router.Run()
 	defer db.Close()
@@ -68,34 +73,29 @@ func postHasilPrediksi(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newHasilPrediksi)
 }
 
-type Periksa struct {
+type Pasien struct {
 	IdPengguna       int64  `json:"id"`
 	NamaPengguna     string `json:"nama_pengguna"`
 	RantaiDNA        string `json:"rantai_dna"`
 	PrediksiPenyakit string `json:"prediksi_penyakit"`
 }
 
-// constructor
-func New(IdPengguna int64, NamaPengguna string, RantaiDNA string, PrediksiPenyakit string) Periksa {
+func postPasien(c *gin.Context) {
+	var newPasien Pasien
 
-	p := Periksa{IdPengguna, NamaPengguna, RantaiDNA, PrediksiPenyakit}
-	return p
-}
-
-func postPeriksa(c *gin.Context) {
-	var newPeriksa Periksa
-
-	if err := c.BindJSON(&newPeriksa); err != nil {
+	if err := c.BindJSON(&newPasien); err != nil {
 		return
 	}
-
-	c.IndentedJSON(http.StatusCreated, newPeriksa)
+	pasien = append(pasien, newPasien)
+	c.IndentedJSON(http.StatusCreated, newPasien)
 }
 
-func (p Periksa) ValidateDnaSequence() {
-
+func getPasien(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, pasien)
 }
 
-func (p Periksa) CheckPenyakit() {
+func (p Pasien) periksaPenyakit() {
+
+	validator.IsValid(p.RantaiDNA)
 
 }
