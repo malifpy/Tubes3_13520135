@@ -8,10 +8,11 @@ class TestDNA extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: 0,
+      id: 999,
       nama_pengguna:'',
       rantai_dna: '',
-      nama_penyakit:''
+      nama_penyakit:'',
+      tanggal_prediksi: ''
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,15 +34,20 @@ class TestDNA extends React.Component {
 
   handleSubmit = () => {
     
-    console.log(this.nama_penyakit.value);
+    console.log(this.state.id.value);
+    console.log(this.nama_pengguna.value);
     console.log(this.state.rantai_dna);
+    console.log(this.nama_penyakit.value);
+    console.log(this.state.tanggal_prediksi);
     
     const formData = new FormData();
     
     // Update the formData object    
     formData.append("id", this.id);
-    formData.append("nama", this.nama_penyakit);
+    formData.append("nama_pengguna", this.nama_pengguna);
     formData.append("rantai_dna", this.state.rantai_dna);
+    formData.append("nama_penyakit", this.nama_penyakit);
+    formData.append("tanggal_prediksi", this.state.tanggal_prediksi);
 
 
     if(formData.values != null){
@@ -49,14 +55,16 @@ class TestDNA extends React.Component {
       
         axios({
             method: 'POST',
-            url: Endpoints.addPenyakit,
+            url: Endpoints.testDNA,
             headers: {
                 'Content-Type': 'application/json'
             },
             data: {
                 id: this.id,
-                nama: this.nama_penyakit.value,
-                rantai_dna: this.state.rantai_dna
+                nama_pengguna: this.nama_pengguna,
+                rantai_dna: this.state.rantai_dna,
+                nama_penyakit: this.nama_penyakit,
+                tanggal_prediksi: this.tanggal_prediksi
             }
 
         }).then((response) => {
