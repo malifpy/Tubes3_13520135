@@ -22,28 +22,30 @@ class HasilPrediksi extends React.Component {
   
   render() {
     return (
-      <div>
-        <ul>
-          <label>
+      <div class = "card">
+        <div>
+          <p>
             nama pengguna
+          </p>
+          <div>
             <input type="text" required={true} ref={(ref) => {this.nama_pengguna = ref; }}/>
-          </label>
-        </ul>
-        <ul>
-          <label>
+          </div>
+          <p>
             rantai dna
+          </p>
+          <div>
             <input type="file" required={true} accept='.txt' onChange={e => this.handleFile(e.target.files[0])}/>
-          </label>
-        </ul>
-        <ul>
-          <label>
+          </div>
+          <p>
             nama penyakit
+          </p>
+          <div>
             <input type="text" required={true} ref={(ref) => {this.nama_penyakit = ref; }}/>
-          </label>
-        </ul>
-        <ul>
-          <button onClick={this.handleSubmit}>Submit</button>
-        </ul>
+          </div>
+          <div>
+            <button onClick={this.handleSubmit}>Submit</button>
+          </div>
+        </div>
       </div>
     );
   }
