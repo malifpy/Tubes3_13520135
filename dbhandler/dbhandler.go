@@ -2,8 +2,8 @@ package dbhandler
 
 import (
 	"database/sql"
+	smalgorithm "dna-matcher/sm_algorithm"
 	"fmt"
-	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -15,22 +15,29 @@ type JenisPenyakit struct {
 }
 
 type HasilPrediksi struct {
-	ID               int64     `json:"id"`
-	TanggalPrediksi  time.Time `json:"tanggal_prediksi"`
-	NamaPasien       string    `json:"nama_pasien"`
-	NamaPenyakit     string    `json:"nama_penyakit"`
-	TingkatKemiripan float64   `json:"tingkat_kemiripan"`
-	StatusPrediksi   bool      `json:"status_prediksi"`
+	ID               int64   `json:"id"`
+	TanggalPrediksi  string  `json:"tanggal_prediksi"`
+	NamaPasien       string  `json:"nama_pasien"`
+	NamaPenyakit     string  `json:"nama_penyakit"`
+	TingkatKemiripan float64 `json:"tingkat_kemiripan"`
+	StatusPrediksi   bool    `json:"status_prediksi"`
 }
 
 func InsertJenisPenyakit(db *sql.DB, rDNA JenisPenyakit) {
 
 	sqlQuery := `INSERT INTO jenis_penyakit (nama, rantai_dna) VALUES($1, $2) RETURNING id;`
 	id := 0
-	err := db.QueryRow(sqlQuery, rDNA.Nama, rDNA.RantaiDNA).Scan(&id)
-	if err != nil {
+	dnaSanitized, err := smalgorithm.IsValid(rDNA.RantaiDNA)
+
+	if dnaSanitized {
+		err := db.QueryRow(sqlQuery, rDNA.Nama, rDNA.RantaiDNA).Scan(&id)
+		if err != nil {
+			panic(err)
+		}
+	} else {
 		panic(err)
 	}
+
 }
 
 func ViewAllJenisPenyakit(db *sql.DB) ([]JenisPenyakit, error) {
