@@ -78,7 +78,7 @@ type Pasien struct {
 	IdPengguna      int64  `json:"id"`
 	NamaPengguna    string `json:"nama_pengguna"`
 	RantaiDNA       string `json:"rantai_dna"`
-	NamaPenyakit    string `json:"prediksi_penyakit"`
+	NamaPenyakit    string `json:"nama_penyakit"`
 	TanggalPrediksi string `json:"tanggal_prediksi"`
 }
 
