@@ -74,7 +74,7 @@ class AddPenyakit extends React.Component {
   
   render() {
     return (
-      <div class = "card"> 
+      <div className='card'> 
         <div>
           <p> Tambah Penyakit </p>
         </div>

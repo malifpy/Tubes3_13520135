@@ -8,7 +8,8 @@ class HasilPrediksi extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      search_query:''
+      search_query:'',
+      result_query:[]
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -16,13 +17,23 @@ class HasilPrediksi extends React.Component {
   
   handleSubmit = () => {
     
-    console.log(this.state.search_query);
-    
+    console.log(this.search_query);
+
+    axios.get(Endpoints.hasilPrediksi)
+      .then(res => {
+        const hasil = res.data;
+        this.setState({
+          result_query : hasil
+        });
+      })
+
+    console.log(this.state.result_query);
+
   }
   
   render() {
     return (
-      <div class = "card">
+      <div className = 'card'>
         <div>
           <p> Cari Hasil Prediksi</p>
         </div>
@@ -31,10 +42,17 @@ class HasilPrediksi extends React.Component {
             <p>
             Query
             </p>
-            <input type="text" required={true} ref={(ref) => {this.nama_penyakit = ref; }}/>
+            <input type="text" required={true} ref={(ref) => {this.search_query = ref; }}/>
             <div >
               <button onClick={this.handleSubmit}>Cari</button>
             </div>
+            <ul>
+              {
+                this.state.result_query.map(result =>
+                  <li key={result.id}>{result.nama_penyakit}</li>
+                )
+              }
+            </ul>
           </div>
         </div>
       </div>

@@ -83,7 +83,7 @@ class TestDNA extends React.Component {
   
   render() {
     return (
-      <div class = "card">
+      <div className = 'card'>
         <div>
           <p>Periksa Rantai DNA</p>
         </div>
