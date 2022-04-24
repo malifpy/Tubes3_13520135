@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Endpoints } from '../Api'
+import * as moment from 'moment'
 import "./TestDNA.scss"
 
 class TestDNA extends React.Component {
@@ -12,7 +13,8 @@ class TestDNA extends React.Component {
       nama_pengguna:'',
       rantai_dna: '',
       nama_penyakit:'',
-      tanggal_prediksi: ''
+      tanggal_prediksi: '',
+      results:[]
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,16 +27,20 @@ class TestDNA extends React.Component {
     fileReader.readAsText(file)
     fileReader.onloadend = (e)=> {
       var content = e.target.result
+      const yourDate = new Date()
+      const NewDate = moment(yourDate, 'YYYY-MM-DD')
+      var tanggal = NewDate.toString()
       console.log(content)
       this.setState({
-        rantai_dna : content
+        rantai_dna : content,
+        tanggal_prediksi: tanggal
       });
     }
   }
 
   handleSubmit = () => {
     
-    console.log(this.state.id.value);
+    console.log(this.state.id);
     console.log(this.nama_pengguna.value);
     console.log(this.state.rantai_dna);
     console.log(this.nama_penyakit.value);
@@ -44,15 +50,15 @@ class TestDNA extends React.Component {
     
     // Update the formData object    
     formData.append("id", this.id);
-    formData.append("nama_pengguna", this.nama_pengguna);
+    formData.append("nama_pengguna", this.nama_pengguna.value);
     formData.append("rantai_dna", this.state.rantai_dna);
-    formData.append("nama_penyakit", this.nama_penyakit);
+    formData.append("nama_penyakit", this.nama_penyakit.value);
     formData.append("tanggal_prediksi", this.state.tanggal_prediksi);
 
 
     if(formData.values != null){
-        console.log(Endpoints.addPenyakit)
-      
+        
+        console.log(Endpoints.testDNA)
         axios({
             method: 'POST',
             url: Endpoints.testDNA,
@@ -61,17 +67,25 @@ class TestDNA extends React.Component {
             },
             data: {
                 id: this.id,
-                nama_pengguna: this.nama_pengguna,
+                nama_pengguna: this.nama_pengguna.value,
                 rantai_dna: this.state.rantai_dna,
-                nama_penyakit: this.nama_penyakit,
-                tanggal_prediksi: this.tanggal_prediksi
+                nama_penyakit: this.nama_penyakit.value,
+                tanggal_prediksi: this.state.tanggal_prediksi
             }
-
         }).then((response) => {
-        console.log(response);
-      }, (error) => {
-        console.log(error);
-      });
+          console.log(response);
+        }, (error) => {
+          console.log(error);
+        });
+
+        // axios.get(Endpoints.hasilPrediksi)
+        // .then(res => {
+        //   const records = res.data;
+        //   const record = records[records.length-1]
+        //   this.setState({
+        //     results : record
+        //   });
+        // })
     
     } else {
 
@@ -108,6 +122,13 @@ class TestDNA extends React.Component {
           </div>
           <div>
             <button onClick={this.handleSubmit}>Submit</button>
+          </div>
+          <div>
+            {
+              this.state.results.map(result =>
+                <p key={result.id}>{result.nama_penyakit}</p>
+              )
+            }
           </div>
         </div>
       </div>
