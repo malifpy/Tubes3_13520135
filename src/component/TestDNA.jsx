@@ -78,14 +78,15 @@ class TestDNA extends React.Component {
           console.log(error);
         });
 
-        // axios.get(Endpoints.hasilPrediksi)
-        // .then(res => {
-        //   const records = res.data;
-        //   const record = records[records.length-1]
-        //   this.setState({
-        //     results : record
-        //   });
-        // })
+        axios.get(Endpoints.hasilPrediksi)
+        .then(res => {
+          const records = res.data;
+          const record = records[records.length-1]
+          console.log(record)
+          this.setState({
+            results : record
+          });
+        })
     
     } else {
 
@@ -124,10 +125,20 @@ class TestDNA extends React.Component {
             <button onClick={this.handleSubmit}>Submit</button>
           </div>
           <div>
+            { 
+              <p>{this.state.results.tanggal_prediksi}</p>
+            }
             {
-              this.state.results.map(result =>
-                <p key={result.id}>{result.nama_penyakit}</p>
-              )
+              <p>{this.state.results.nama_pasien}</p>
+            }
+            {
+              <p>{this.state.results.nama_penyakit}</p>
+            }
+            {
+              <p>{this.state.results.tingkat_kemiripan}</p>
+            }
+            {
+              <p>{this.state.results.status_prediksi}</p>
             }
           </div>
         </div>
