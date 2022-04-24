@@ -74,21 +74,22 @@ class AddPenyakit extends React.Component {
   
   render() {
     return (
-      <div class = "card">
-        <div class = "input-wrapper">
-          <p>
-            nama penyakit          
-          </p>
+      <div class = "card"> 
+        <div>
+          <p> Tambah Penyakit </p>
+        </div>
+        <div>
           <div>
-            <input type="text" required={true} ref={(ref) => {this.nama_penyakit = ref; }}/>
+          <p>
+            Nama Penyakit          
+          </p>
+          <input type="text" required={true} ref={(ref) => {this.nama_penyakit = ref; }}/>
           </div>
           <div>
             <p>
-              rantai dna
+              Rantai DNA
             </p>
-            <div>
-              <input type="file" required={true} accept='.txt' onChange={e => this.handleFile(e.target.files[0])}/>
-            </div>
+            <input type="file" required={true} accept='.txt' onChange={e => this.handleFile(e.target.files[0])}/>
           </div>
           <div>
             <button onClick={this.handleSubmit}>Submit</button>

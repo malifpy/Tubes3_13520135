@@ -13,7 +13,7 @@ export const MatcherDNA = () => {
             />
             <div className="compressor-wrapper">
                 <AddPenyakit />
-                <TestDNA />
+                <TestDNA />  
                 <HasilPrediksi />
             </div>
         </>

@@ -85,22 +85,25 @@ class TestDNA extends React.Component {
     return (
       <div class = "card">
         <div>
-          <p>
-            nama pengguna
-          </p>
+          <p>Periksa Rantai DNA</p>
+        </div>
+        <div>
           <div>
-            <input type="text" required={true} ref={(ref) => {this.nama_pengguna = ref; }}/>
+          <p>
+            Nama Pengguna
+          </p>
+          <input type="text" required={true} ref={(ref) => {this.nama_pengguna = ref; }}/>
           </div>
-          <p>
-            rantai dna
-          </p>
           <div>
-            <input type="file" required={true} accept='.txt' onChange={e => this.handleFile(e.target.files[0])}/>
+          <p>
+            Rantai DNA
+          </p>
+          <input type="file" required={true} accept='.txt' onChange={e => this.handleFile(e.target.files[0])}/>
           </div>
-          <p>
-            nama penyakit
-          </p>
           <div>
+            <p>
+              Nama Penyakit
+            </p>
             <input type="text" required={true} ref={(ref) => {this.nama_penyakit = ref; }}/>
           </div>
           <div>
