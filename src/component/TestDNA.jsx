@@ -29,7 +29,8 @@ class TestDNA extends React.Component {
       var content = e.target.result
       const yourDate = new Date()
       const NewDate = moment(yourDate, 'YYYY-MM-DD')
-      var tanggal = NewDate.toString()
+      var tanggal = NewDate.toISOString()
+      console.log(tanggal)
       console.log(content)
       this.setState({
         rantai_dna : content,
