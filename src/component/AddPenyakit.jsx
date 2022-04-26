@@ -74,7 +74,7 @@ class AddPenyakit extends React.Component {
   
   render() {
     return (
-      <div className='card'> 
+      <form onSubmit={this.handleSubmit} className='card'> 
         <div>
           <p> Tambah Penyakit </p>
         </div>
@@ -92,10 +92,10 @@ class AddPenyakit extends React.Component {
             <input type="file" required={true} accept='.txt' onChange={e => this.handleFile(e.target.files[0])}/>
           </div>
           <div>
-            <button onClick={this.handleSubmit}>Submit</button>
+            <input type="submit" value="Submit" />
           </div>
         </div>
-      </div>
+      </form>
     );
   }
 }
