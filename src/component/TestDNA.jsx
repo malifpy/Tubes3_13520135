@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Endpoints } from '../Api'
-import * as moment from 'moment'
+import moment from 'moment';
 import "./TestDNA.scss"
 
 class TestDNA extends React.Component {
@@ -14,11 +14,14 @@ class TestDNA extends React.Component {
       rantai_dna: '',
       nama_penyakit:'',
       tanggal_prediksi: '',
-      results:[]
+      results:[],
+      processing: false,
+      doneProcess: false
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFile = this.handleFile.bind(this);
+    this.getResult = this.getResult.bind(this);
   }
   
 
@@ -29,7 +32,7 @@ class TestDNA extends React.Component {
       var content = e.target.result
       const yourDate = new Date()
       const NewDate = moment(yourDate, 'YYYY-MM-DD')
-      var tanggal = NewDate.toISOString()
+      var tanggal = NewDate.toISOString().split('T')[0]
       console.log(tanggal)
       console.log(content)
       this.setState({
@@ -38,6 +41,22 @@ class TestDNA extends React.Component {
       });
     }
   }
+
+  getResult = () => {
+
+    axios.get(Endpoints.hasilPrediksi)
+        .then(res => {
+          const records = res.data;
+          const record = records[records.length-1]
+          console.log(record)
+          this.setState({
+            results : record,
+            doneProcess: true
+          });
+        })
+
+  }
+
 
   handleSubmit = () => {
     
@@ -79,22 +98,15 @@ class TestDNA extends React.Component {
           console.log(error);
         });
 
-        axios.get(Endpoints.hasilPrediksi)
-        .then(res => {
-          const records = res.data;
-          const record = records[records.length-1]
-          console.log(record)
-          this.setState({
-            results : record
-          });
+        this.setState({
+          processing: true
         })
     
     } else {
 
       console.log("error");
 
-    }
-    
+    } 
   }
   
   render() {
@@ -123,11 +135,19 @@ class TestDNA extends React.Component {
             <input type="text" required={true} ref={(ref) => {this.nama_penyakit = ref; }}/>
           </div>
           <div>
-            <button onClick={this.handleSubmit}>Submit</button>
+            <button onClick={this.handleSubmit} >Submit</button>
           </div>
-          <div>
+
+          {this.state.processing ? (
+                this.getResult(),
+                this.setState({
+                  processing: false
+                })) : (<></>)
+            }
+
+          <div className={this.state.doneProcess ? "result-wrapper" : "result-wrapper-hidden"} >
             { 
-              <p>{this.state.results.tanggal_prediksi}</p>
+              <p>{String(this.state.results.tanggal_prediksi).substring(0,10)}</p>
             }
             {
               <p>{this.state.results.nama_pasien}</p>
@@ -136,10 +156,10 @@ class TestDNA extends React.Component {
               <p>{this.state.results.nama_penyakit}</p>
             }
             {
-              <p>{this.state.results.tingkat_kemiripan}</p>
+              <p>{String(this.state.results.tingkat_kemiripan*100) + '%'}</p>
             }
             {
-              <p>{this.state.results.status_prediksi}</p>
+              <p>{String(this.state.results.status_prediksi)}</p>
             }
           </div>
         </div>
