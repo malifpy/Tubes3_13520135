@@ -42,6 +42,13 @@ class TestDNA extends React.Component {
     }
   }
 
+  done = () => {
+
+    this.setState({
+      processing: false
+    })
+  }
+
   getResult = () => {
 
     axios.get(Endpoints.hasilPrediksi)
@@ -140,9 +147,7 @@ class TestDNA extends React.Component {
 
           {this.state.processing ? (
                 this.getResult(),
-                this.setState({
-                  processing: false
-                })) : (<></>)
+                this.done()) : (<></>)
             }
 
           <div className={this.state.doneProcess ? "result-wrapper" : "result-wrapper-hidden"} >
