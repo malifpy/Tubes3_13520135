@@ -10,7 +10,9 @@ class AddPenyakit extends React.Component {
     this.state = {
       id: 0,
       nama_penyakit:'',
-      rantai_dna: ''
+      rantai_dna: '',
+      status: "data penyakit berhasil ditambahkan",
+      doneProcess: false
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -61,7 +63,10 @@ class AddPenyakit extends React.Component {
         }).then((response) => {
         console.log(response);
       }, (error) => {
-        console.log(error);
+        console.log(error.message);
+        this.setState({
+          status: "Rantai DNA tidak valid"
+        })
       });
     
     } else {
@@ -69,12 +74,16 @@ class AddPenyakit extends React.Component {
       console.log("error");
 
     }
+
+    this.setState({
+      doneProcess: true
+    })
     
   }
   
   render() {
     return (
-      <form onSubmit={this.handleSubmit} className='card'> 
+      <div className='card'> 
         <div>
           <p> Tambah Penyakit </p>
         </div>
@@ -92,10 +101,14 @@ class AddPenyakit extends React.Component {
             <input type="file" required={true} accept='.txt' onChange={e => this.handleFile(e.target.files[0])}/>
           </div>
           <div>
-            <input type="submit" value="Submit" />
+            {/* <input type="submit" value="Submit" /> */}
+            <button onClick={this.handleSubmit}>Submit</button>
+          </div>
+          <div className={this.state.doneProcess ? "result-wrapper" : "result-wrapper-hidden"}>
+            <p>{this.state.status}</p>
           </div>
         </div>
-      </form>
+      </div>
     );
   }
 }
