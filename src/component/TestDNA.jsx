@@ -103,6 +103,10 @@ class TestDNA extends React.Component {
               status: "Data penyakit tidak ditemukan !",
               processing: false
             })
+          } else {
+
+            this.getResult()
+
           }
         }, (error) => {
           console.log(error.status);
@@ -153,11 +157,10 @@ class TestDNA extends React.Component {
             <input type="text" required={true} ref={(ref) => {this.nama_penyakit = ref; }}/>
           </div>
           <div>
-            {/* <button onClick={this.handleSubmit}>Submit</button> */}
             <input type="submit"  value="Submit"/>
           </div>
           {this.state.processing ? (
-              <button onClick={this.getResult}>Get Result</button>
+              (<></>)
             ):(<p>{this.state.status}</p>)
           }
   
