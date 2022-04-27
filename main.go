@@ -53,8 +53,24 @@ func postJenisPenyakit(c *gin.Context) {
 		return
 	}
 
-	dbhandler.InsertJenisPenyakit(db, newJenisPenyakit)
-	c.IndentedJSON(http.StatusCreated, newJenisPenyakit)
+	err1 := dbhandler.InsertJenisPenyakit(db, newJenisPenyakit)
+	if err1 != nil {
+		fmt.Println("Rantai DNA yang di input tidak valid")
+
+		c.JSON(http.StatusBadRequest, gin.H{
+
+			"status":  "KO",
+			"message": "rantai dna tidak valid",
+			"data":    err1,
+		})
+
+		return
+
+	} else {
+
+		c.IndentedJSON(http.StatusCreated, newJenisPenyakit)
+
+	}
 }
 
 func getHasilPrediksi(c *gin.Context) {

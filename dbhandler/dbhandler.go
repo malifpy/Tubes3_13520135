@@ -3,6 +3,7 @@ package dbhandler
 import (
 	"database/sql"
 	smalgorithm "dna-matcher/sm_algorithm"
+	"errors"
 	"fmt"
 
 	_ "github.com/lib/pq"
@@ -23,20 +24,23 @@ type HasilPrediksi struct {
 	StatusPrediksi   bool    `json:"status_prediksi"`
 }
 
-func InsertJenisPenyakit(db *sql.DB, rDNA JenisPenyakit) {
+func InsertJenisPenyakit(db *sql.DB, rDNA JenisPenyakit) error {
 
+	var err1 error
 	sqlQuery := `INSERT INTO jenis_penyakit (nama, rantai_dna) VALUES($1, $2) RETURNING id;`
 	id := 0
-	dnaSanitized, err := smalgorithm.IsValid(rDNA.RantaiDNA)
+	dnaSanitized, _ := smalgorithm.IsValid(rDNA.RantaiDNA)
 
 	if dnaSanitized {
 		err := db.QueryRow(sqlQuery, rDNA.Nama, rDNA.RantaiDNA).Scan(&id)
 		if err != nil {
-			panic(err)
+			return fmt.Errorf("SOMEHOW ERROR: %v", err)
 		}
 	} else {
-		panic(err)
+		err1 = errors.New("rantai dna tidak valid")
 	}
+
+	return err1
 
 }
 
