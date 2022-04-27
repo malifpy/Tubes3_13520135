@@ -16,12 +16,14 @@ class TestDNA extends React.Component {
       tanggal_prediksi: '',
       results:[],
       processing: false,
-      doneProcess: false
+      doneProcess: false,
+      status : null
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFile = this.handleFile.bind(this);
     this.getResult = this.getResult.bind(this);
+    this.done = this.done.bind(this);
   }
   
 
@@ -58,21 +60,16 @@ class TestDNA extends React.Component {
           console.log(record)
           this.setState({
             results : record,
-            doneProcess: true
+            doneProcess : true
           });
         })
 
   }
 
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
     
-    console.log(this.state.id);
-    console.log(this.nama_pengguna.value);
-    console.log(this.state.rantai_dna);
-    console.log(this.nama_penyakit.value);
-    console.log(this.state.tanggal_prediksi);
-    
+    e.preventDefault()
     const formData = new FormData();
     
     // Update the formData object    
@@ -100,15 +97,29 @@ class TestDNA extends React.Component {
                 tanggal_prediksi: this.state.tanggal_prediksi
             }
         }).then((response) => {
-          console.log(response);
+          console.log(response.status);
+          if (response.status === 204) {
+            this.setState({
+              status: "Data penyakit tidak ditemukan !",
+              processing: false
+            })
+          }
         }, (error) => {
-          console.log(error);
+          console.log(error.status);
+          this.setState({
+            status: "Rantai DNA tidak valid !",
+            processing: false
+          })
         });
+      
+      if (this.state.status === null){
 
         this.setState({
           processing: true
         })
-    
+
+      }
+
     } else {
 
       console.log("error");
@@ -118,7 +129,7 @@ class TestDNA extends React.Component {
   
   render() {
     return (
-      <div className = 'card'>
+      <form onSubmit={this.handleSubmit} className = 'card'>
         <div>
           <p>Periksa Rantai DNA</p>
         </div>
@@ -142,14 +153,14 @@ class TestDNA extends React.Component {
             <input type="text" required={true} ref={(ref) => {this.nama_penyakit = ref; }}/>
           </div>
           <div>
-            <button onClick={this.handleSubmit} >Submit</button>
+            {/* <button onClick={this.handleSubmit}>Submit</button> */}
+            <input type="submit"  value="Submit"/>
           </div>
-
           {this.state.processing ? (
-                this.getResult(),
-                this.done()) : (<></>)
-            }
-
+              <button onClick={this.getResult}>Get Result</button>
+            ):(<p>{this.state.status}</p>)
+          }
+  
           <div className={this.state.doneProcess ? "result-wrapper" : "result-wrapper-hidden"} >
             { 
               <p>{String(this.state.results.tanggal_prediksi).substring(0,10)}</p>
@@ -168,7 +179,7 @@ class TestDNA extends React.Component {
             }
           </div>
         </div>
-      </div>
+      </form>
     );
   }
 }

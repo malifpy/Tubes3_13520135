@@ -32,8 +32,9 @@ class AddPenyakit extends React.Component {
     }
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
     
+    e.preventDefault()
     console.log(this.nama_penyakit.value);
     console.log(this.state.rantai_dna);
     
@@ -83,7 +84,7 @@ class AddPenyakit extends React.Component {
   
   render() {
     return (
-      <div className='card'> 
+      <form onSubmit={this.handleSubmit} className='card'> 
         <div>
           <p> Tambah Penyakit </p>
         </div>
@@ -101,14 +102,13 @@ class AddPenyakit extends React.Component {
             <input type="file" required={true} accept='.txt' onChange={e => this.handleFile(e.target.files[0])}/>
           </div>
           <div>
-            {/* <input type="submit" value="Submit" /> */}
-            <button onClick={this.handleSubmit}>Submit</button>
+            <input type="submit" value="Submit" />
           </div>
           <div className={this.state.doneProcess ? "result-wrapper" : "result-wrapper-hidden"}>
             <p>{this.state.status}</p>
           </div>
         </div>
-      </div>
+      </form>
     );
   }
 }
