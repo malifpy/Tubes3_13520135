@@ -109,13 +109,28 @@ func postPasien(c *gin.Context) {
 	if dnaSanitized {
 
 		pasien = append(pasien, newPasien)
-		newPasien.periksaPenyakit()
-		c.IndentedJSON(http.StatusCreated, newPasien)
+		err := newPasien.periksaPenyakit()
+
+		if err != nil {
+			c.JSON(http.StatusNoContent, gin.H{
+				"status":  "KO",
+				"message": "Data penyakit tidak ditemukan",
+				"data":    dnaSanitized,
+			})
+		} else {
+
+			c.IndentedJSON(http.StatusCreated, newPasien)
+
+		}
 
 	} else {
 
-		fmt.Println("Rantai dna yang di input tidak valid")
-
+		// fmt.Println("Rantai DNA yang di input tidak valid")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "KO",
+			"message": "rantai dna tidak valid",
+			"data":    dnaSanitized,
+		})
 	}
 
 }
@@ -124,45 +139,53 @@ func getPasien(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, pasien)
 }
 
-func (p Pasien) periksaPenyakit() {
+func (p Pasien) periksaPenyakit() error {
 
 	// kamus lokal
 	var rantai_dna string
 	var mirip bool
+	var err error
 
 	sqlQuery := `SELECT rantai_dna FROM jenis_penyakit WHERE nama = $1;`
 	err1 := db.QueryRow(sqlQuery, p.NamaPenyakit).Scan(&rantai_dna)
 	if err1 != nil {
-		panic(err1)
-	}
-	fmt.Println("\n", rantai_dna)
 
-	dnaSanitized, err := smalgorithm.IsValid(p.RantaiDNA)
-	if dnaSanitized {
-
-		_, diff, _ := smalgorithm.KMPMod(p.RantaiDNA, rantai_dna)
-
-		if diff >= 0.8 {
-
-			mirip = true
-
-		} else {
-
-			mirip = false
-
-		}
-
-		sqlQuery := `INSERT INTO hasil_prediksi (tanggal_prediksi, nama_pasien, nama_penyakit, tingkat_kemiripan, status_prediksi) VALUES($1, $2, $3, $4, $5) RETURNING id;`
-		id := 0
-		err = db.QueryRow(sqlQuery, p.TanggalPrediksi, p.NamaPengguna, p.NamaPenyakit, diff, mirip).Scan(&id)
-		if err != nil {
-			panic(err)
-		}
+		err = err1
 
 	} else {
 
-		fmt.Println(err)
+		fmt.Println("\n", rantai_dna)
+
+		dnaSanitized, err := smalgorithm.IsValid(p.RantaiDNA)
+		if dnaSanitized {
+
+			_, diff, _ := smalgorithm.KMPMod(p.RantaiDNA, rantai_dna)
+
+			if diff >= 0.8 {
+
+				mirip = true
+
+			} else {
+
+				mirip = false
+
+			}
+
+			sqlQuery := `INSERT INTO hasil_prediksi (tanggal_prediksi, nama_pasien, nama_penyakit, tingkat_kemiripan, status_prediksi) VALUES($1, $2, $3, $4, $5) RETURNING id;`
+			id := 0
+			err = db.QueryRow(sqlQuery, p.TanggalPrediksi, p.NamaPengguna, p.NamaPenyakit, diff, mirip).Scan(&id)
+			if err != nil {
+				panic(err)
+			}
+
+		} else {
+
+			fmt.Println(err)
+
+		}
 
 	}
+
+	return err
 
 }
