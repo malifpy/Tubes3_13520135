@@ -1,16 +1,16 @@
 package smalgorithm
 
 import (
-    "errors"
+	"errors"
 )
 
 // Wrapper algoritma, memastikan pattern gak kosong
 func KMP(text string, pattern string) (int, error) {
-    if len(pattern) == 0 {
-        return -1, errors.New("Pattern Length is 0")
-    } else {
-        return kmpAlgo(text, pattern), nil
-    }
+	if len(pattern) == 0 {
+		return -1, errors.New("pattern length is 0")
+	} else {
+		return kmpAlgo(text, pattern), nil
+	}
 }
 
 // Sesuai PPT

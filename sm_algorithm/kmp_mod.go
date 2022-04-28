@@ -7,7 +7,7 @@ import (
 // Wrapper untuk memastikan pattern gak kosong
 func KMPMod(text string, pattern string) (int, float64, error) {
 	if len(pattern) == 0 {
-		return -1, 0.0, errors.New("Pattern Length is 0")
+		return -1, 0.0, errors.New("pattern length is 0")
 	} else {
 		// (* 2 / 10) karena toleransinya >= 80%
 		fIdx, diff := kmpModAlgo(text, pattern, len(pattern)*2/10)
