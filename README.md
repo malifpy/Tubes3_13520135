@@ -9,7 +9,7 @@ Web aplikasi ini memiliki beberapa fitur sebagai berikut:
   - Memprediksi penyakit pengguna
   - Mencari hasil prediksi penyakit berdasarkan tanggal dilakukannya prediksi
   - Mencari hasil prediksi penyakit berdasarkan nama penyakit 
-  - 
+
 ## Requirements
 
 ## How to compile and run
