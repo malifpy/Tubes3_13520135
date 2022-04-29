@@ -139,3 +139,25 @@ func ViewHasilPrediksiByName(db *sql.DB, Nama string) ([]HasilPrediksi, error) {
 	defer rows.Close()
 	return hasilPrediksi, nil
 }
+
+func ViewHasilPrediksiByNameNDate(db *sql.DB, Nama string, Tanggal string) ([]HasilPrediksi, error) {
+	var hasilPrediksi []HasilPrediksi
+	sqlQuery := `SELECT * FROM hasil_prediksi WHERE nama_penyakit = $1 and tanggal_prediksi = $2;`
+	rows, err := db.Query(sqlQuery, Nama, Tanggal)
+	if err != nil {
+		return nil, fmt.Errorf("SOMEHOW ERROR: %v", err)
+	}
+	// Loop through rows, using Scan to assign column data to struct fields.
+	for rows.Next() {
+		var hasil_prediksi HasilPrediksi
+		if err := rows.Scan(&hasil_prediksi.ID, &hasil_prediksi.TanggalPrediksi, &hasil_prediksi.NamaPasien, &hasil_prediksi.NamaPenyakit, &hasil_prediksi.TingkatKemiripan, &hasil_prediksi.StatusPrediksi); err != nil {
+			return nil, fmt.Errorf("SOMEHOW ERROR: %v", err)
+		}
+		hasilPrediksi = append(hasilPrediksi, hasil_prediksi)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("SOMEHOW ERROR: %v", err)
+	}
+	defer rows.Close()
+	return hasilPrediksi, nil
+}

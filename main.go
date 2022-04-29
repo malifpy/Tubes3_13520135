@@ -127,9 +127,12 @@ func getData(c *gin.Context) {
 
 	isDate, _ := smalgorithm.IsDate(queries)
 
-	if isDate {
+	if len(queries) > 10 {
 
-		hasil_prediksi, err := dbhandler.ViewHasilPrediksiByDate(db, queries)
+		date := queries[:10]
+		nama := queries[11:]
+
+		hasil_prediksi, err := dbhandler.ViewHasilPrediksiByNameNDate(db, nama, date)
 		fmt.Println(hasil_prediksi, err)
 		if hasil_prediksi != nil {
 
@@ -143,22 +146,43 @@ func getData(c *gin.Context) {
 				"data":    hasil_prediksi,
 			})
 		}
+
 	} else {
 
-		hasil_prediksi, err := dbhandler.ViewHasilPrediksiByName(db, queries)
-		fmt.Println(hasil_prediksi, err)
+		if isDate {
 
-		if hasil_prediksi != nil {
+			hasil_prediksi, err := dbhandler.ViewHasilPrediksiByDate(db, queries)
+			fmt.Println(hasil_prediksi, err)
+			if hasil_prediksi != nil {
 
-			c.IndentedJSON(http.StatusOK, hasil_prediksi)
+				c.IndentedJSON(http.StatusOK, hasil_prediksi)
 
+			} else {
+
+				c.JSON(http.StatusNoContent, gin.H{
+					"status":  "KO",
+					"message": "Data tidak ditemukan",
+					"data":    hasil_prediksi,
+				})
+			}
 		} else {
-			c.JSON(http.StatusNoContent, gin.H{
-				"status":  "KO",
-				"message": "Data tidak ditemukan",
-				"data":    hasil_prediksi,
-			})
+
+			hasil_prediksi, err := dbhandler.ViewHasilPrediksiByName(db, queries)
+			fmt.Println(hasil_prediksi, err)
+
+			if hasil_prediksi != nil {
+
+				c.IndentedJSON(http.StatusOK, hasil_prediksi)
+
+			} else {
+				c.JSON(http.StatusNoContent, gin.H{
+					"status":  "KO",
+					"message": "Data tidak ditemukan",
+					"data":    hasil_prediksi,
+				})
+			}
 		}
+
 	}
 }
 
