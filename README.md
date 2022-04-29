@@ -20,13 +20,19 @@ Frontend
 - Pergi ke folder my-app
 - Ubah variable ``` apiURL ``` pada file ``` Api.js ``` dengan 'http://localhost:8080'
 - Simpan perubahan
-- Pada terminal gunakan command
+- Pada terminal jalankan command
 ``` npm install ```
 kemudian
 ``` npm start ```
 
 Backend
-- Pergi ke folder 
+- Pergi ke folder backend
+- Pada terminal jalankan command
+``` go build ```
+kemudian
+``` export DATABASE_URL=postgres://oyukhvnsxohoku:4e4319499fb3816f3d229893806cbfde848caa6550e31798bd2895be581f9bf3@ec2-34-207-12-160.compute-1.amazonaws.com:5432/de4m84cglucnno ``` 
+kemudian
+``` ./dna-matcher ```
 
 ## Authors
 
