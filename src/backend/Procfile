@@ -1,1 +1,1 @@
-web: bin/dna-matcher
+web: 'bin/dna-matcher'
