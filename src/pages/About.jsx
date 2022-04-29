@@ -20,7 +20,6 @@ export const About = () => {
                         <ul>Azmi Alfatih Shalahuddin</ul>
                         <ul>13520158</ul>
                         <ul>K02</ul>
-                        <ul>FE</ul>
                     </div>
                 </div>
                 <div className="about-container">
