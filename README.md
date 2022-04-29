@@ -8,9 +8,14 @@ Web aplikasi ini memiliki beberapa fitur sebagai berikut:
   - Menambahkan jenis penyakit
   - Memprediksi penyakit pengguna
   - Mencari hasil prediksi penyakit berdasarkan tanggal dilakukannya prediksi
-  - Mencari hasil prediksi penyakit berdasarkan nama penyakit 
+  - Mencari hasil prediksi penyakit berdasarkan nama penyakit
+  - Mencari hasil prediksi penyakit berdasarkan tanggal dan nama penyakit 
 
 ## Requirements
+
+ - [Go](https://go.dev/)
+ - [npm](https://www.npmjs.com/)
+ - [PostgreSQL](https://www.postgresql.org/)
 
 ## How to compile and run
 
@@ -33,6 +38,10 @@ kemudian
 ``` export DATABASE_URL=postgres://oyukhvnsxohoku:4e4319499fb3816f3d229893806cbfde848caa6550e31798bd2895be581f9bf3@ec2-34-207-12-160.compute-1.amazonaws.com:5432/de4m84cglucnno ``` 
 kemudian
 ``` ./dna-matcher ```
+
+### Link Deploy
+
+https://tubes3-dna-matcher.netlify.app/
 
 ## Authors
 
