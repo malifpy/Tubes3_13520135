@@ -12,6 +12,10 @@ Web aplikasi ini memiliki beberapa fitur sebagai berikut:
 
 ## Requirements
 
+ - [Go](https://go.dev/)
+ - [npm](https://www.npmjs.com/)
+ - [PostgreSQL](https://www.postgresql.org/)
+
 ## How to compile and run
 
 ### Lokal
