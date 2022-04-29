@@ -14,8 +14,19 @@ Web aplikasi ini memiliki beberapa fitur sebagai berikut:
 
 ## How to compile and run
 
+### Lokal
 
+Frontend
+- Pergi ke folder my-app
+- Ubah variable ``` apiURL ``` pada file ``` Api.js ``` dengan 'http://localhost:8080'
+- Simpan perubahan
+- Pada terminal gunakan command
+``` npm install ```
+kemudian
+``` npm start ```
 
+Backend
+- Pergi ke folder 
 
 ## Authors
 
