@@ -21,6 +21,6 @@ Web aplikasi ini memiliki beberapa fitur sebagai berikut:
 
 | NIM      | NAMA                          | Pembagian Tugas                                                  |	
 |----------|-------------------------------|------------------------------------------------------------------|
-| 13520135 | Muhammad Alif Putra Yasa      | Implementasi Algoritma KMP, BM, Regex, Backend, Database, Deploy |
+| 13520135 | Muhammad Alif Putra Yasa      | Implementasi Algoritma KMP, BM, Regex, Backend, Deploy           |
 | 13520158 | Azmi Alfatih Shalahuddin      |                                                                  |
 | 13520165 | Ghazian Tsabit Alkamil        | Impelementasi semua fitur pada Frontend, Backend, Database       |
