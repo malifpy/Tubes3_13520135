@@ -19,6 +19,10 @@ var pasien = []Pasien{
 	{IdPengguna: 1, NamaPengguna: "Zian", RantaiDNA: "ACGTACGTACGTCGTA", NamaPenyakit: "siput gila", TanggalPrediksi: "2006-January-02"},
 }
 
+var query = []Query{
+	{IdQuery: 1, SearchQuery: "2022-04-29"},
+}
+
 func main() {
 
 	var err error
@@ -35,6 +39,8 @@ func main() {
 	router.POST("/hasil_prediksi", postHasilPrediksi)
 	router.POST("/pasien", postPasien)
 	router.GET("/pasien", getPasien)
+	router.POST("/data", postQuery)
+	router.GET("/data", getData)
 
 	router.Run()
 	defer db.Close()
@@ -96,6 +102,64 @@ type Pasien struct {
 	RantaiDNA       string `json:"rantai_dna"`
 	NamaPenyakit    string `json:"nama_penyakit"`
 	TanggalPrediksi string `json:"tanggal_prediksi"`
+}
+
+type Query struct {
+	IdQuery     int64  `json:"id"`
+	SearchQuery string `json:"query"`
+}
+
+func postQuery(c *gin.Context) {
+	var newQuery Query
+
+	if err := c.BindJSON(&newQuery); err != nil {
+		return
+	}
+
+	query = append(query, newQuery)
+	c.IndentedJSON(http.StatusCreated, newQuery)
+
+}
+
+func getData(c *gin.Context) {
+
+	queries := query[len(query)-1].SearchQuery
+
+	isDate, _ := smalgorithm.IsDate(queries)
+
+	if isDate {
+
+		hasil_prediksi, err := dbhandler.ViewHasilPrediksiByDate(db, queries)
+		fmt.Println(hasil_prediksi, err)
+		if hasil_prediksi != nil {
+
+			c.IndentedJSON(http.StatusOK, hasil_prediksi)
+
+		} else {
+
+			c.JSON(http.StatusNoContent, gin.H{
+				"status":  "KO",
+				"message": "Data tidak ditemukan",
+				"data":    hasil_prediksi,
+			})
+		}
+	} else {
+
+		hasil_prediksi, err := dbhandler.ViewHasilPrediksiByName(db, queries)
+		fmt.Println(hasil_prediksi, err)
+
+		if hasil_prediksi != nil {
+
+			c.IndentedJSON(http.StatusOK, hasil_prediksi)
+
+		} else {
+			c.JSON(http.StatusNoContent, gin.H{
+				"status":  "KO",
+				"message": "Data tidak ditemukan",
+				"data":    hasil_prediksi,
+			})
+		}
+	}
 }
 
 func postPasien(c *gin.Context) {
