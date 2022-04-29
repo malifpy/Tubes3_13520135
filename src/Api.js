@@ -6,4 +6,5 @@ export const Endpoints = {
   addPenyakit: `${apiURL}/jenis_penyakit`,
   testDNA:  `${apiURL}/pasien`,
   hasilPrediksi: `${apiURL}/hasil_prediksi`,
+  query: `${apiURL}/data`
 }

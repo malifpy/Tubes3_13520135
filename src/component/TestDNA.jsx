@@ -63,7 +63,6 @@ class TestDNA extends React.Component {
             doneProcess : true
           });
         })
-
   }
 
 

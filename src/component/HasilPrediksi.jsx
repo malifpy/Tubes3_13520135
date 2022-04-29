@@ -8,32 +8,68 @@ class HasilPrediksi extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: 0,
       search_query:'',
-      result_query:[]
+      result_query:[],
+      doneProcess: false,
+      processing:false,
+      status: null
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   
-  handleSubmit = () => {
+  getResult = () => {
+
+    axios.get(Endpoints.query)
+        .then(res => {
+          const records = res.data;
+          
+          if (res.status === 204) {
+            this.setState({
+              status: "Data tidak ditemukan !",
+              processing: false
+            })
+          } else {
+            this.setState({
+              result_query : records,
+            });
+          }
+        })
+        if (this.state.status === null){
+          this.setState({
+            processing: true
+          })
+        }
+  }
+
+
+  handleSubmit = (e) => {
     
-    console.log(this.search_query);
+    e.preventDefault()
+    axios({
+      method: 'POST',
+      url: Endpoints.query,
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      data: {
+          id: this.id,
+          query: this.search_query.value
+      }
+    }).then((response) => {
+      console.log(response);
+  
+      this.getResult()
 
-    axios.get(Endpoints.hasilPrediksi)
-      .then(res => {
-        const hasil = res.data;
-        this.setState({
-          result_query : hasil
-        });
-      })
-
-    console.log(this.state.result_query);
-
+    }, (error) => {
+      console.log(error.message);
+    });
   }
   
   render() {
     return (
-      <div className = 'card'>
+      <form onSubmit={this.handleSubmit} className = 'card'>
         <div>
           <p> Cari Hasil Prediksi</p>
         </div>
@@ -44,18 +80,27 @@ class HasilPrediksi extends React.Component {
             </p>
             <input type="text" required={true} ref={(ref) => {this.search_query = ref; }}/>
             <div >
-              <button onClick={this.handleSubmit}>Cari</button>
+              <input type="submit"  value="Submit"/>
             </div>
-            <ul>
+            {this.state.processing ? (
+              (
+              <ul>
               {
                 this.state.result_query.map(result =>
-                  <li key={result.id}>{result.nama_penyakit}</li>
+                  <li key={result.id}>
+                    <p>
+                      {String(result.tanggal_prediksi).substring(0,10) +"-"+String(result.nama_pasien)+"-"+String(result.nama_penyakit)+"-"+String(result.tingkat_kemiripan*100)+"% -"+String(result.status_prediksi)}
+                    </p>
+                  </li>
                 )
               }
-            </ul>
+              </ul>
+              )
+            ):(<p>{this.state.status}</p>)
+            }
           </div>
         </div>
-      </div>
+      </form>
     );
   }
 }
